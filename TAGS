@@ -1,0 +1,234 @@
+
+src/environment.h,63
+typedef struct environment environment_t;environment_t16,252
+
+src/lib/hash_table.h,72
+typedef struct hash_table ioopm_hash_table_t;ioopm_hash_table_t15,284
+
+src/lib/linked_list.h,54
+typedef struct list ioopm_list_t;ioopm_list_t15,280
+
+src/lib/iterator.h,81
+typedef struct list_iterator ioopm_list_iterator_t;ioopm_list_iterator_t13,198
+
+src/lib/refmem.c,175
+struct cellcell4,41
+  struct cell *cell;cell6,55
+  int i;i7,76
+  char *string;string8,85
+void cell_destructor(obj c)cell_destructor11,105
+int main(void)main16,176
+
+src/lib/Makefile,402
+CFLAGS = -pedantic -Wall -g -DASSERT_BOUNDSCFLAGS1,0
+GCOVFLAGS = --coverageGCOVFLAGS2,44
+GPROFFLAGS = -pgGPROFFLAGS3,67
+	valgrind --leak-check=full ./hash_table_tests-leak-check17,457
+	valgrind --leak-check=full ./linked_list_tests-leak-check18,504
+	valgrind --leak-check=full ./hash_table_tests_gcov-leak-check29,897
+	valgrind --leak-check=full ./linked_list_tests_gcov-leak-check30,949
+
+src/lib/linked_list_tests.c,1768
+static int not_in_test_data = 1234;not_in_test_data8,132
+static int test_values[] = {1, 2, -1, -2, 0, 123, 435, 95, 45, 67, 98, 34, 56};test_values9,168
+static size_t test_values_cnt = sizeof(test_values) / sizeof(int);test_values_cnt10,248
+static bool int_eq(elem_t a, elem_t b)int_eq14,337
+static ioopm_list_t *test_data_list()test_data_list19,402
+static int init_list_suite()init_list_suite31,659
+static int clean_list_suite()clean_list_suite36,705
+void list_insert_get_test()list_insert_get_test43,770
+void list_prepend_append_test()list_prepend_append_test59,1233
+void list_contains_test()list_contains_test79,1778
+void list_remove_first_test()list_remove_first_test97,2372
+void list_remove_middle_test()list_remove_middle_test112,2737
+void list_remove_last_test()list_remove_last_test128,3142
+void list_size_test()list_size_test143,3524
+void list_is_empty_test()list_is_empty_test166,4123
+void list_clear_test()list_clear_test179,4486
+static bool val_eq_pred(elem_t key, elem_t value, void *cmp_to)val_eq_pred192,4774
+void list_any_test()list_any_test197,4886
+static bool in_test_values_pred(elem_t key, elem_t value, void *extra)in_test_values_pred209,5224
+void list_all_test()list_all_test218,5418
+static void add_one_apply_fun(elem_t key, elem_t *val, void *extra)add_one_apply_fun228,5685
+void list_apply_test()list_apply_test233,5773
+void list_iterator_current_next_test()list_iterator_current_next_test245,6063
+void list_iterator_has_next_test()list_iterator_has_next_test262,6560
+void list_iterator_insert_test()list_iterator_insert_test278,6944
+void list_iterator_reset_test()list_iterator_reset_test311,7886
+void list_iterator_remove_test()list_iterator_remove_test331,8368
+int main()main367,9241
+
+src/lib/linked_list.c,2731
+struct node {node8,110
+  elem_t val;val9,124
+  struct node *next;next10,138
+typedef struct node node_t;node_t13,163
+struct list {list16,193
+  size_t count;count17,207
+  node_t *first;first18,223
+  node_t *last;last19,240
+  ioopm_eq_function eq;eq20,256
+struct list_iterator {list_iterator24,285
+  ioopm_list_t *list;list25,308
+  node_t *cur;cur26,330
+  node_t *prev;prev27,345
+  node_t **cur_pp;cur_pp29,394
+static node_t *create_node(elem_t val, node_t *next)create_node33,418
+ioopm_list_t *ioopm_linked_list_create(ioopm_eq_function eq)ioopm_linked_list_create40,585
+size_t ioopm_linked_list_size(ioopm_list_t *list)ioopm_linked_list_size47,803
+bool ioopm_linked_list_is_empty(ioopm_list_t *list)ioopm_linked_list_is_empty52,880
+void ioopm_linked_list_destroy(ioopm_list_t *list)ioopm_linked_list_destroy57,981
+void ioopm_linked_list_clear(ioopm_list_t *list)ioopm_linked_list_clear63,1084
+elem_t ioopm_linked_list_get(ioopm_list_t *list, size_t index)ioopm_linked_list_get78,1322
+bool ioopm_linked_list_contains(ioopm_list_t *list, elem_t element)ioopm_linked_list_contains90,1573
+void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)ioopm_linked_list_append104,1800
+void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value)ioopm_linked_list_prepend117,2035
+static void list_insert_middle(ioopm_list_t *list, size_t index, elem_t value)list_insert_middle128,2243
+void ioopm_linked_list_insert(ioopm_list_t *list, size_t index, elem_t value)ioopm_linked_list_insert139,2518
+elem_t ioopm_linked_list_remove(ioopm_list_t *list, size_t index)ioopm_linked_list_remove152,2867
+bool ioopm_linked_list_all(ioopm_list_t *list, ioopm_predicate pred, void *extra)ioopm_linked_list_all177,3357
+bool ioopm_linked_list_any(ioopm_list_t *list, ioopm_predicate pred, void *extra)ioopm_linked_list_any191,3664
+void ioopm_linked_list_apply_to_all(ioopm_list_t *list, ioopm_apply_function fun, void *extra)ioopm_linked_list_apply_to_all205,3970
+ioopm_list_iterator_t *ioopm_list_iterator(ioopm_list_t *list)ioopm_list_iterator216,4249
+bool ioopm_iterator_has_next(ioopm_list_iterator_t *iter)ioopm_iterator_has_next226,4544
+elem_t ioopm_iterator_next(ioopm_list_iterator_t *iter)ioopm_iterator_next231,4662
+elem_t ioopm_iterator_remove(ioopm_list_iterator_t *iter)ioopm_iterator_remove242,4909
+void ioopm_iterator_insert(ioopm_list_iterator_t *iter, elem_t element)ioopm_iterator_insert258,5284
+void ioopm_iterator_reset(ioopm_list_iterator_t *iter)ioopm_iterator_reset266,5478
+elem_t ioopm_iterator_current(ioopm_list_iterator_t *iter)ioopm_iterator_current273,5629
+void ioopm_iterator_destroy(ioopm_list_iterator_t *iter)ioopm_iterator_destroy281,5797
+
+src/lib/freq_count.c,750
+#define Delimiters Delimiters7,105
+static int cmpstringp(const void *p1, const void *p2)cmpstringp9,151
+void sort_keys(char *keys[], size_t no_keys)sort_keys14,273
+void process_word(char *word, ioopm_hash_table_t *ht)process_word19,375
+void process_file(char *filename, ioopm_hash_table_t *ht)process_file31,664
+struct append_args {append_args61,1186
+  char **arr;arr62,1207
+  int idx;idx63,1221
+void append_val_to_array(elem_t key, elem_t *value, struct append_args *extra)append_val_to_array66,1236
+void free_val(elem_t key, elem_t *value, void *extra)free_val72,1380
+static bool string_eq(elem_t a, elem_t b)string_eq77,1461
+static bool int_eq(elem_t a, elem_t b)int_eq82,1548
+int main(int argc, char *argv[])main87,1613
+
+src/lib/hash_table_tests.c,2596
+static int test_keys[] = {0, 1, 245, -1, -345, 5342, 923, 123, 34523, 543123, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};test_keys14,259
+static char *string_keys[] = {"0", "1", "245", "-1", "-345", "5342", "923", "123", "34523", "543123",string_keys15,382
+static char *test_values[] = {"test", "abc", "text", "more text", "even more text"test_values17,560
+static const size_t test_data_cnt = sizeof(test_keys) / sizeof(int);test_data_cnt22,837
+static int int_hash(elem_t elem)int_hash26,928
+static bool int_eq(elem_t a, elem_t b)int_eq31,983
+static bool str_eq(elem_t a, elem_t b)str_eq36,1048
+static ioopm_hash_table_t *test_data_table()test_data_table41,1132
+static int test_key_index(elem_t key)test_key_index51,1417
+static int test_value_index(elem_t value)test_value_index61,1567
+static int init_ht_suite()init_ht_suite73,1749
+static int clean_ht_suite()clean_ht_suite79,1794
+static void ht_basic_insert_lookup_test()ht_basic_insert_lookup_test87,1858
+static void ht_string_keys_test()ht_string_keys_test109,2524
+static void ht_basic_remove_test()ht_basic_remove_test131,3207
+static void ht_remove_missing_key_test()ht_remove_missing_key_test148,3707
+static void ht_replace_value_test()ht_replace_value_test162,4103
+static void ht_size_test()ht_size_test188,4834
+static void ht_is_empty_test()ht_is_empty_test212,5499
+static void ht_clear_test()ht_clear_test229,5937
+static void ht_keys_test()ht_keys_test248,6359
+static void ht_values_test()ht_values_test274,6919
+static void ht_has_key_test()ht_has_key_test300,7491
+static void ht_has_value_test()ht_has_value_test319,8074
+static bool key_exists(elem_t key, elem_t value, void *extra)key_exists337,8670
+static bool value_exists(elem_t key, elem_t value, void *extra)value_exists342,8773
+static bool false_pred(elem_t key, elem_t value, void *extra)false_pred347,8882
+static void ht_all_test()ht_all_test352,8965
+static bool key_eq_exists(elem_t key, elem_t value, void *cmp_to)key_eq_exists363,9258
+static bool value_eq_exists(elem_t key, elem_t value, void *cmp_to)value_eq_exists368,9370
+static void ht_any_test()ht_any_test373,9494
+static void apply_strdup(elem_t key, elem_t *value, void *extra)apply_strdup387,9886
+static void apply_toupper(elem_t key, elem_t *value, void *extra)apply_toupper392,9995
+static void apply_free(elem_t key, elem_t *value, void *extra)apply_free397,10112
+static bool first_isupper(elem_t key, elem_t value, void *extra)first_isupper402,10202
+static void ht_apply_to_all_test()ht_apply_to_all_test407,10306
+int main()main420,10659
+
+src/lib/hash_table.c,3711
+#define GROW_FACTOR GROW_FACTOR9,150
+#define DEFAULT_TABLE_SIZE DEFAULT_TABLE_SIZE10,172
+#define DEFAULT_LOAD_FACTOR_LIMIT DEFAULT_LOAD_FACTOR_LIMIT11,202
+typedef struct entry entry_t;entry_t13,242
+struct entryentry15,273
+  elem_t key;key17,288
+  elem_t value;value18,302
+  entry_t *next;next19,318
+struct hash_tablehash_table22,339
+  size_t size;size24,359
+  size_t no_buckets;no_buckets25,374
+  double load_factor_limit;load_factor_limit26,395
+  entry_t **buckets;buckets27,423
+  ioopm_hash_function hash_fun;hash_fun28,444
+  ioopm_eq_function key_eq;key_eq29,476
+  ioopm_eq_function val_eq;val_eq30,504
+static int get_bucket(int hash, size_t no_buckets)get_bucket33,536
+static entry_t *entry_create(elem_t key, elem_t value, entry_t *next)entry_create38,650
+static entry_t **find_cur_pp(ioopm_hash_table_t *ht, elem_t key)find_cur_pp45,850
+ioopm_hash_table_t *ioopm_hash_table_create(ioopm_hash_function hash_fun, ioopm_eq_function key_eq, ioopm_eq_function val_eq)ioopm_hash_table_create57,1135
+static entry_t **create_bucket_array(size_t no_buckets)create_bucket_array62,1382
+ioopm_hash_table_t *ioopm_hash_table_create_advanced(ioopm_hash_function hash_fun, ioopm_eq_function key_eq, ioopm_eq_function val_eq, size_t no_buckets, double load_factor_limit)ioopm_hash_table_create_advanced67,1490
+static void insert_entries(ioopm_hash_table_t *ht, entry_t **old, size_t old_size)insert_entries81,2002
+static void resize_if_too_full(ioopm_hash_table_t *ht)resize_if_too_full100,2426
+void ioopm_hash_table_insert(ioopm_hash_table_t *ht, elem_t key, elem_t value)ioopm_hash_table_insert118,2845
+bool ioopm_hash_table_lookup(ioopm_hash_table_t *ht, elem_t key, elem_t *result)ioopm_hash_table_lookup131,3139
+bool ioopm_hash_table_remove(ioopm_hash_table_t *ht, elem_t key, elem_t *result)ioopm_hash_table_remove142,3356
+static void free_entry_list_iterative(entry_t *entry)free_entry_list_iterative158,3649
+void ioopm_hash_table_destroy(ioopm_hash_table_t *ht)ioopm_hash_table_destroy176,3995
+size_t ioopm_hash_table_size(ioopm_hash_table_t *ht)ioopm_hash_table_size185,4181
+bool ioopm_hash_table_is_empty(ioopm_hash_table_t *ht)ioopm_hash_table_is_empty190,4258
+void ioopm_hash_table_clear(ioopm_hash_table_t *ht)ioopm_hash_table_clear195,4342
+ioopm_list_t *ioopm_hash_table_keys(ioopm_hash_table_t *ht)ioopm_hash_table_keys205,4542
+ioopm_list_t *ioopm_hash_table_values(ioopm_hash_table_t *ht)ioopm_hash_table_values222,4893
+struct eq_to {eq_to239,5248
+  ioopm_eq_function eq;eq240,5263
+  elem_t val;val241,5287
+static bool key_eq(elem_t key, elem_t value, struct eq_to *args)key_eq244,5305
+bool ioopm_hash_table_has_key(ioopm_hash_table_t *ht, elem_t key)ioopm_hash_table_has_key249,5410
+static bool val_eq(elem_t key, elem_t value, struct eq_to *args)val_eq255,5603
+bool ioopm_hash_table_has_value(ioopm_hash_table_t *ht, elem_t value)ioopm_hash_table_has_value260,5710
+static bool entry_list_any(entry_t *entry, ioopm_predicate pred, void *args)entry_list_any266,5909
+bool ioopm_hash_table_any(ioopm_hash_table_t *ht, ioopm_predicate pred, void *args)ioopm_hash_table_any278,6129
+static bool entry_list_all(entry_t *entry, ioopm_predicate pred, void *args)entry_list_all287,6356
+bool ioopm_hash_table_all(ioopm_hash_table_t *ht, ioopm_predicate pred, void *args)ioopm_hash_table_all299,6577
+static void entry_list_apply(entry_t *entry, ioopm_apply_function apply_fun, void *args)entry_list_apply308,6805
+void ioopm_hash_table_apply_to_all(ioopm_hash_table_t *ht, ioopm_apply_function apply_fun, void *args)ioopm_hash_table_apply_to_all316,7002
+int ioopm_string_knr_hash(elem_t str)ioopm_string_knr_hash322,7211
+
+src/lib/common.h,867
+typedef union elem elem_t;elem_t17,577
+#define ioopm_int_elem(ioopm_int_elem18,604
+#define ioopm_unsigned_elem(ioopm_unsigned_elem19,650
+#define ioopm_bool_elem(ioopm_bool_elem20,701
+#define ioopm_float_elem(ioopm_float_elem21,748
+#define ioopm_charp_elem(ioopm_charp_elem22,796
+#define ioopm_voidp_elem(ioopm_voidp_elem23,848
+typedef bool(*ioopm_predicate)(elem_t key, elem_t value, void *extra);ioopm_predicate27,988
+typedef void(*ioopm_apply_function)(elem_t key, elem_t *value, void *extra);ioopm_apply_function30,1151
+typedef bool(*ioopm_eq_function)(elem_t a, elem_t b);ioopm_eq_function33,1280
+typedef int(*ioopm_hash_function)(elem_t elem);ioopm_hash_function36,1396
+union elemelem38,1445
+  int i;i40,1458
+  unsigned int u;u41,1467
+  bool b;b42,1485
+  float f;f43,1495
+  char *charp;charp44,1506
+  void *voidp;voidp45,1521
+
+src/refmem.h,79
+typedef void obj;obj3,14
+typedef void(*function1_t)(obj *);function1_t4,32
+
+src/environment.c,94
+struct environment {environment14,255
+  ioopm_hash_table_t *environment;environment15,276
+
+src/common.h,46
+typedef struct header header_t;header_t4,15
