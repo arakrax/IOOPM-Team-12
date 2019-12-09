@@ -31,14 +31,16 @@ run_tests: test_environment
 run_%: %
 	./$<.out
 
-refmem: $(SRC)refmem.o environment.o
+refmem: $(SRC)refmem.o $(SRC)environment.o
 	$(STD)
 
-environment: environment.o hash_table.lib.o linked_list.lib.o
+environment: $(SRC)environment.o $(LIB)hash_table.o $(LIB)linked_list.o
 	$(CC) $(CFlagsLib) $< -o $@
 
-test_environment: $(TEST)environment_test.o environment.o hash_table.lib.o linked_list.lib.o
+test_environment: $(TEST)environment_test.o $(SRC)environment.o $(LIB)hash_table.o $(LIB)linked_list.o
 	$(STD)
+coverage_test_environment: $(TEST)environment_test.cov.o $(SRC)environment.cov.o $(LIB)hash_table.cov.o $(LIB)linked_list.cov.o
+	$(COVERAGE)
 
 valgrind_%: %
 	$(Valgrind) ./$<.out
@@ -50,6 +52,12 @@ valgrind_%: %
 	$(CC) $(CFlagsLib) $<
 
 %.cov.o: %.c
+	$(CC) $(CFlagsLib) $(COVERAGE_FLAG) $< -o $@
+
+%.cov.o: $(SRC)%.c
+	$(CC) $(CFlagsLib) $(COVERAGE_FLAG) $< -o $@
+
+%.cov.o: $(LIB)%.c
 	$(CC) $(CFlagsLib) $(COVERAGE_FLAG) $< -o $@
 
 doxygen_firefox: doxygen
