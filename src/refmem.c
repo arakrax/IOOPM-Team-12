@@ -13,7 +13,7 @@ struct cell
 
 environment_t *environment = NULL;
 
-void initalize_environment(){
+void initialize_environment(){
   environment = refmem_environment_create();
 }
 

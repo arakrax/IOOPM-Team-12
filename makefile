@@ -24,9 +24,10 @@ endef
 
 .PHONY: doxygen clear valgrind_freq
 
-tests: test_environment #add more test files as they are created
-run_tests: test_environment
+tests: test_environment test_refmem #add more test files as they are created
+run_tests: test_environment test_refmem
 	./$<.out
+	./test_refmem.out #TODO: 
 
 run_%: %
 	./$<.out
@@ -39,6 +40,10 @@ environment: $(SRC)environment.o $(LIB)hash_table.o $(LIB)linked_list.o
 
 test_environment: $(TEST)environment_test.o $(SRC)environment.o $(LIB)hash_table.o $(LIB)linked_list.o
 	$(STD)
+
+test_refmem: $(TEST)refmem_test.o  $(SRC)refmem.o $(SRC)environment.o $(LIB)hash_table.o $(LIB)linked_list.o
+	$(STD)
+
 coverage_test_environment: $(TEST)environment_test.cov.o $(SRC)environment.cov.o $(LIB)hash_table.cov.o $(LIB)linked_list.cov.o
 	$(COVERAGE)
 

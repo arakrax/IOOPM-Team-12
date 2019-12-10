@@ -5,6 +5,7 @@
 typedef void obj;
 typedef void(*function1_t)(obj *);
 
+void initialize_environment();
 void retain(obj *);
 void release(obj *);
 size_t rc(obj *);
