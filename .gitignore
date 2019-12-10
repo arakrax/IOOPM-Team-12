@@ -1,0 +1,13 @@
+./*.o
+./*.out
+./*.info
+./*.gcda
+./*.gcno
+./*.data
+./*.data.old
+./*.h.gch
+./*.cov
+./*.out.*
+./*.dSYM
+./*.out.dSYM
+./*_lcov/
