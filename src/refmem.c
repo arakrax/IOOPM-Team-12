@@ -11,7 +11,11 @@ struct cell
   char *string;
 };
 
-environment_t *environment = refmem_environment_create();
+environment_t *environment = NULL;
+
+void initalize_environment(){
+  environment = refmem_environment_create();
+}
 
 int refmem_get_count(header_t *header) {
   return header->count;
