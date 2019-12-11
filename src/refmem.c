@@ -63,6 +63,17 @@ void release(obj *object){
   //TODO: object not found?
 }
 
+
+obj *allocate(size_t bytes, function1_t destructor){
+  obj *objectPointer = malloc(bytes);
+  header_t *header;
+  header->count = 0;
+  header->destroyer = destructor;
+  refmem_environment_insert(environment, objectPointer, header);
+  return objectPointer;
+}
+
+
 void deallocate(obj *object){
   header_t *header_location;
   bool result = refmem_environment_lookup(environment, object, header_location);
