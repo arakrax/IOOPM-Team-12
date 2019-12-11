@@ -33,10 +33,10 @@ run_%: %
 	./$<.out
 
 refmem: $(SRC)refmem.o $(SRC)environment.o
-	$(STD)
+	$(CC) $(CFlagsLib) $< -o $@
 
 environment: $(SRC)environment.o $(LIB)hash_table.o $(LIB)linked_list.o
-	$(CC) $(CFlagsLib) $< -o $@
+	$(STD)
 
 test_environment: $(TEST)environment_test.o $(SRC)environment.o $(LIB)hash_table.o $(LIB)linked_list.o
 	$(STD)
@@ -93,5 +93,5 @@ clean_test:
 	cd $(TEST) && rm -f -r ./*.dSYM ./*.out.dSYM ./*_lcov/
 
 clean_doc:
-	cd $(DOC) && rm -f -r ./*.o ./*.out ./*.info ./*.gcda ./*.gcno ./*.data ./*.data.old ./*.h.gch ./*.cov ./*.out.*
-	cd $(DOC) && rm -f -r ./*.dSYM ./*.out.dSYM ./*_lcov/
+	#cd $(DOC) && rm -f -r ./*.o ./*.out ./*.info ./*.gcda ./*.gcno ./*.data ./*.data.old ./*.h.gch ./*.cov ./*.out.*
+	#cd $(DOC) && rm -f -r ./*.dSYM ./*.out.dSYM ./*_lcov/

@@ -21,24 +21,22 @@ int refmem_get_count(header_t *header) {
   return header->count;
 }
 
-function1_t *refmem_get_destroyer(header_t *header) {
+function1_t refmem_get_destroyer(header_t *header) {
   return header->destroyer;
 }
 
 size_t rc(obj *object){
   header_t *header_location;
+  // if result == true then header_location will have relevant value
   bool result = refmem_environment_lookup(environment, object, header_location);
 
-  if (result)
-    {
-      return refmem_get_count(header_location);
-    }
-  //TODO: object not found?
+  assert (result);
+  return refmem_get_count(header_location);
 }
 
 void retain(obj *object)
 {
-  header_t *header_location;
+  header_t *header_location; 
   bool result = refmem_environment_lookup(environment, object, header_location);
 
   if (result)
@@ -66,8 +64,8 @@ void release(obj *object){
 
 obj *allocate(size_t bytes, function1_t destructor){
   obj *objectPointer = malloc(bytes);
-  header_t *header;
-  header->count = 0;
+  header_t *header = malloc(sizeof(header_t));
+  header->count = 0; // should count be = 1?
   header->destroyer = destructor;
   refmem_environment_insert(environment, objectPointer, header);
   return objectPointer;

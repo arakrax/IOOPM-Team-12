@@ -34,8 +34,8 @@ static void retain_release_rc_test(){
   obj *object = allocate(4, free_destructor);
 
   
-  /*CU_ASSERT(rc(object) == 0);
-  retain(object);
+  CU_ASSERT(rc(object) == 0);
+  /*retain(object);
   CU_ASSERT(rc(object) == 1);
   retain(object);
   CU_ASSERT(rc(object) == 2);
