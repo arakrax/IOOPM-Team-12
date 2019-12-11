@@ -54,14 +54,16 @@ void release(obj *object){
   header_t *header_location = malloc(sizeof(header_t));
   bool result = refmem_environment_lookup(environment, object, header_location);
 
-  if (result)
+  assert(result);
+  // working on a copy
+  header_location->count--;
+  if (rc(header_location) == 0)
     {
-      header_location->count--;
-      if (rc(header_location) == 0){
-	deallocate(object);
-      }
+      deallocate(object);
     }
-  //TODO: object not found?
+
+  
+  
 }
 
 
