@@ -26,29 +26,32 @@ function1_t refmem_get_destroyer(header_t *header) {
 }
 
 size_t rc(obj *object){
-  header_t *header_location;
+  header_t *header_location = malloc(sizeof(header_t));
   // if result == true then header_location will have relevant value
   bool result = refmem_environment_lookup(environment, object, header_location);
 
   assert (result);
-  return refmem_get_count(header_location);
+  int count = refmem_get_count(header_location);
+  free(header_location);
+  return count;
 }
 
 void retain(obj *object)
 {
-  header_t *header_location; 
+  header_t *header_location = malloc(sizeof(header_t));  
   bool result = refmem_environment_lookup(environment, object, header_location);
 
-  if (result)
-    {
-      header_location->count++;
-    }
-  //TODO: object not found?
+  assert(result);
+
+  // increment count
+  // discussing lookup should return pointer not copy
+  
+  free(header_location);
 }
 
 void release(obj *object){
 
-  header_t *header_location;
+  header_t *header_location = malloc(sizeof(header_t));
   bool result = refmem_environment_lookup(environment, object, header_location);
 
   if (result)
