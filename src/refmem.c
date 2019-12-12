@@ -19,6 +19,9 @@ void initialize_environment(){
 }
 
 void destroy_environment() {
+  if(!environment)
+    return;
+
   refmem_environment_destroy(environment);
 }
 
