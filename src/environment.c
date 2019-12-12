@@ -1,6 +1,7 @@
 #include "environment.h"
 #include "lib/common.h"
 #include "lib/hash_table.h"
+#include <assert.h>
 
 /**
  * @file environment.c
@@ -35,39 +36,60 @@ environment_t *refmem_environment_create()
 
 void refmem_environment_insert(environment_t *environment, void *object, header_t *header)
 {
+  assert(environment);
+  assert(object);
+
   ioopm_hash_table_insert(environment->environment, ioopm_voidp_elem(object), ioopm_voidp_elem(header));
 }
 
 bool refmem_environment_exists(environment_t *environment, void *object)
 {
+  assert(environment);
+  assert(environment->environment);
+  assert(object);
+
   return ioopm_hash_table_has_key(environment->environment, ioopm_voidp_elem(object));
 }
 
-bool refmem_environment_lookup(environment_t *environment, void *object, header_t *header_location)
+bool refmem_environment_lookup(environment_t *environment, void *object, header_t **header_location)
 {
+  assert(environment);
+  assert(environment->environment);
+  assert(object);
+  assert(&header_location);
+
   elem_t location;
   bool result = ioopm_hash_table_lookup(environment->environment, ioopm_voidp_elem(object), &location);
-  header_location->count     = ((header_t*)location.voidp)->count;
-  header_location->destroyer = ((header_t*)location.voidp)->destroyer;
+  *header_location = (header_t*)location.voidp;
   return result;
 }
 
-bool refmem_environment_remove(environment_t *environment, void *object, header_t *header_location)
+bool refmem_environment_remove(environment_t *environment, void *object, header_t **header_location)
 {
+  assert(environment);
+  assert(environment->environment);
+  assert(object);
+  assert(&header_location);
+
   elem_t location;
   bool result = ioopm_hash_table_remove(environment->environment, ioopm_voidp_elem(object), &location);
-  header_location->count     = ((header_t*)location.voidp)->count;
-  header_location->destroyer = ((header_t*)location.voidp)->destroyer;
+  *header_location = (header_t*)location.voidp;
   return result;
 }
 
 void refmem_environment_clear(environment_t *environment)
 {
+  assert(environment);
+  assert(environment->environment);
+
   ioopm_hash_table_clear(environment->environment);
 }
 
 void refmem_environment_destroy(environment_t *environment)
 {
+  assert(environment);
+  assert(environment->environment);
+
   ioopm_hash_table_destroy(environment->environment);
   free(environment);
 }
