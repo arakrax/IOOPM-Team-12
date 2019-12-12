@@ -68,16 +68,15 @@ void release(obj *object){
 
   assert(result);
 
-  if (rc(header_location) == 0)
+  if (rc(object) == 0)
     {
-      (*header_location)->count -= 1;
-      if (rc(object) == 0)
-	{
-	  deallocate(object);
-	  free(header_location);
-	  return;
-	}
+      deallocate(object);
+      free(header_location);
+      return;
     }
+
+  (*header_location)->count -= 1;
+
   //TODO: object not found?
   free(header_location);
 }
