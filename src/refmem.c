@@ -33,19 +33,22 @@ function1_t refmem_get_destroyer(header_t *header) {
 size_t rc(obj *object)
 {
   header_t **header_location = malloc(sizeof(header_t*));
-  if(environment == NULL || object == NULL)
+  if(!environment || !object)
     return DEVILS_CONSTANT;
   // if result == true then header_location will have relevant value
   bool result = refmem_environment_lookup(environment, object, header_location);
 
   assert(result);
   size_t count = (*header_location)->count;
+
   free(header_location);
   return count;
 }
 
 void retain(obj *object)
 {
+
+
  header_t **header_location = malloc(sizeof(header_t*));
   bool result = refmem_environment_lookup(environment, object, header_location);
 
@@ -63,7 +66,9 @@ void release(obj *object){
   header_t **header_location = malloc(sizeof(header_t*));
   bool result = refmem_environment_lookup(environment, object, header_location);
 
-  if (result)
+  assert(result);
+
+  if (rc(header_location) == 0)
     {
       (*header_location)->count -= 1;
       if (rc(object) == 0)
