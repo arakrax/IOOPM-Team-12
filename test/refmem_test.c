@@ -1,5 +1,6 @@
 #include "../src/environment.h"
 #include "../src/refmem.h"
+#include "../src/refmem_private.h"
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
 #include <stdlib.h>
@@ -10,7 +11,7 @@ static header_t *header_create(int count, function1_t destructor)
 {
   header_t *new_header = malloc(sizeof(header_t));
   new_header->count = count;
-  new_header->destroyer = &destructor;
+  new_header->destroyer = destructor;
   return new_header;
 }
 
@@ -28,26 +29,30 @@ static int clean_rc_suite()
  return 0;
 }
 
-
 static void retain_release_rc_test(){
   initialize_environment();
   obj *object = allocate(4, free_destructor);
 
-  
   CU_ASSERT(rc(object) == 0);
-  /*retain(object);
+  retain(object);
   CU_ASSERT(rc(object) == 1);
   retain(object);
   CU_ASSERT(rc(object) == 2);
   release(object);
+
   CU_ASSERT(rc(object) == 1);
   release(object);
-  //TODO: ASSERT OBJECT IS REMOVED*/
+  //TODO: ASSERT OBJECT IS REMOVED
+
+
+  deallocate(object);
+  destroy_environment();
 }
 
 
 int main()
 {
+
     if (CUE_SUCCESS != CU_initialize_registry())
     return CU_get_error();
 
@@ -69,5 +74,5 @@ int main()
     CU_basic_run_tests();
     CU_cleanup_registry();
     return CU_get_error();
-}
 
+}

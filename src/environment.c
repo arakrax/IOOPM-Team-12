@@ -43,21 +43,32 @@ bool refmem_environment_exists(environment_t *environment, void *object)
   return ioopm_hash_table_has_key(environment->environment, ioopm_voidp_elem(object));
 }
 
-bool refmem_environment_lookup(environment_t *environment, void *object, header_t *header_location)
+bool refmem_environment_lookup(environment_t *environment, void *object, header_t **header_location)
 {
-  elem_t location;
-  bool result = ioopm_hash_table_lookup(environment->environment, ioopm_voidp_elem(object), &location);
-  header_location->count     = ((header_t*)location.voidp)->count;
-  header_location->destroyer = ((header_t*)location.voidp)->destroyer;
+  bool result = false;
+
+  if(!environment || !environment->environment || !object || !header_location)
+    return  result;
+
+  elem_t location = {.i = 0};
+  result = ioopm_hash_table_lookup(environment->environment, ioopm_voidp_elem(object), &location);
+  *header_location = (header_t*)location.voidp;
+
   return result;
 }
 
-bool refmem_environment_remove(environment_t *environment, void *object, header_t *header_location)
+bool refmem_environment_remove(environment_t *environment, void *object, header_t **header_location)
 {
+  bool result = false;
+
+  if(!environment || !environment->environment || !object || !header_location)
+    return result;
+
   elem_t location;
-  bool result = ioopm_hash_table_remove(environment->environment, ioopm_voidp_elem(object), &location);
-  header_location->count     = ((header_t*)location.voidp)->count;
-  header_location->destroyer = ((header_t*)location.voidp)->destroyer;
+  result = ioopm_hash_table_remove(environment->environment, ioopm_voidp_elem(object), &location);
+  if((header_t*)location.voidp)
+    *header_location = (header_t*)location.voidp;
+
   return result;
 }
 

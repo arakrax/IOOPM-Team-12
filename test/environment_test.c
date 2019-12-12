@@ -21,7 +21,7 @@ static header_t *header_create(int count, function1_t destructor)
 {
   header_t *new_header = malloc(sizeof(header_t));
   new_header->count = count;
-  new_header->destroyer = &destructor;
+  new_header->destroyer = destructor;
   return new_header;
 }
 
@@ -63,14 +63,14 @@ static int clean_ht_suite()
 static void environment_insert_lookup_test() {
   environment_t *environment = refmem_environment_create();
   header_t **headers = headers_array(ARRAY_LENGTH);
-  header_t *result = malloc(sizeof(header_t));
+  header_t **result = malloc(sizeof(header_t*));
 
   for(size_t i = 0; i < objects_count; ++i)
     {
       refmem_environment_insert(environment, objects[i], headers[i]);
 
       CU_ASSERT(refmem_environment_lookup(environment, objects[i], result));
-      CU_ASSERT(header_eq(result, headers[i]));
+      CU_ASSERT(header_eq(*result, headers[i]));
     }
 
   free(result);
@@ -95,14 +95,14 @@ static void environment_exists_test() {
 static void environment_remove_test() {
   environment_t *environment = refmem_environment_create();
   header_t **headers = headers_array(ARRAY_LENGTH);
-  header_t *result = malloc(sizeof(header_t));
+  header_t **result = malloc(sizeof(header_t));
 
   for(size_t i = 0; i < objects_count; ++i)
     {
       refmem_environment_insert(environment, objects[i], headers[i]);
 
       CU_ASSERT(refmem_environment_remove(environment, objects[i], result));
-      CU_ASSERT(header_eq(result, headers[i]));
+      CU_ASSERT(header_eq(*result, headers[i]));
     }
 
   free(result);

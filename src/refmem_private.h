@@ -16,3 +16,4 @@ struct header {
 
 int refmem_get_count(header_t *header);
 function1_t refmem_get_destroyer(header_t *header);
+void destroy_environment();

@@ -9,7 +9,7 @@ LIB = ./src/lib/
 TEST = ./test/
 DOC = ./doc/
 
-Valgrind = valgrind --leak-check=full
+Valgrind = valgrind --leak-check=full  # --track-origins=yes -v
 LCOV = lcov -c -d ./ -o $@.info
 GENHTML = genhtml $@.info -o $@_lcov
 
@@ -27,7 +27,7 @@ endef
 tests: test_environment test_refmem #add more test files as they are created
 run_tests: test_environment test_refmem
 	./$<.out
-	./test_refmem.out #TODO: 
+	./test_refmem.out #TODO:
 
 run_%: %
 	./$<.out
